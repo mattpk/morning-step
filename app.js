@@ -1,6 +1,6 @@
-import Button from '@material-ui/core/Button';
-
-const e = React.createElement;
+const {
+  Button,
+} = window['material-ui'];
 
 class MorningApp extends React.Component {
   constructor(props) {
@@ -22,4 +22,4 @@ class MorningApp extends React.Component {
 }
 
 const domContainer = document.querySelector('#app');
-ReactDOM.render(e(MorningApp), domContainer);
+ReactDOM.render(React.createElement(MorningApp), domContainer);
