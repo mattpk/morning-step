@@ -1,4 +1,4 @@
-'use strict';
+import Button from '@material-ui/core/Button';
 
 const e = React.createElement;
 
@@ -13,9 +13,10 @@ class MorningApp extends React.Component {
       return 'You liked this.';
     }
     return (
-      <button onClick={() => this.setState({ liked: true })}>
+      <Button variant="contained" color="primary" onClick={() => this.setState({ liked: true })}>
         Like
-      </button>
+      </Button>
+
     );
   }
 }
