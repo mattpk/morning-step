@@ -1,25 +1,47 @@
-const {
-  Button,
-} = window['material-ui'];
-
 class MorningApp extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { liked: false };
+    this.state = {step: props.step, saved: false};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  handleChange(event) {
+    this.setState({step: event.target.value});
+  }
+
+  handleSubmit(event) { 
+    this.setState({saved: true});
+    event.preventDefault();
+  }
+
+  componentDidMount() {
   }
 
   render() {
-    if (this.state.liked) {
-      return 'You liked this.';
-    }
     return (
-      <Button variant="contained" color="primary" onClick={() => this.setState({ liked: true })}>
-        Like
-      </Button>
+      <React.Fragment>
+        <div className = "container pt-3" style={{"maxWidth":"800px"}}>
+          <h2 className="text-center">Morning Step</h2>
+          <form onSubmit={this.handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="step">Tomorrow's morning step will be:</label>
+            <input type="text"  value={this.state.step} onChange={this.handleChange} className="form-control" id="step" />
+            <small id="step" className="form-text text-muted">Choose a task that you'll enjoy and finish within half an hour.</small>
+          </div>
+          <button type="submit" className="btn btn-primary">Save</button>
+        </form>
+        <div></div>
 
+        { this.state.saved ? 
+        <div class="alert mt-2 alert-success" role="alert">
+          Saved. Good luck on your morning step tomorrow.
+        </div> : null }
+
+        </div>
+      </React.Fragment>
     );
   }
 }
-
 const domContainer = document.querySelector('#app');
 ReactDOM.render(React.createElement(MorningApp), domContainer);
