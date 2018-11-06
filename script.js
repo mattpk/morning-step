@@ -27,6 +27,7 @@ class MorningApp extends React.Component {
       return response.json();
     }).then((json) => {
       this.setState(json);
+      updateTextAreaHeight();
     });
   }
 
@@ -66,4 +67,3 @@ function updateTextAreaHeight() {
 }
 $('.form-group').on( 'change keyup keydown paste cut', 'textarea', updateTextAreaHeight).find( 'textarea' ).change();
 $(window).resize(updateTextAreaHeight);
-window.onload = updateTextAreaHeight;
