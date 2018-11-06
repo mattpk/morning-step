@@ -5,6 +5,7 @@ class MorningApp extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
   }
   handleChange(event) {
     this.setState({step: event.target.value});
@@ -12,10 +13,21 @@ class MorningApp extends React.Component {
 
   handleSubmit(event) { 
     this.setState({saved: true});
+    fetch('https://api.keyvalue.xyz/a4408b5f/myKey', {
+      method: 'POST',
+      body: JSON.stringify({step: this.state.step}),
+    });
     event.preventDefault();
   }
 
   componentDidMount() {
+    fetch('https://api.keyvalue.xyz/a4408b5f/myKey', {
+      method: 'GET'
+    }).then((response) => {
+      return response.json();
+    }).then((json) => {
+      this.setState(json);
+    });
   }
 
   render() {
@@ -34,7 +46,7 @@ class MorningApp extends React.Component {
         <div></div>
 
         { this.state.saved ? 
-        <div class="alert mt-2 alert-success" role="alert">
+        <div className="alert mt-2 alert-success" role="alert">
           Saved. Good luck on your morning step tomorrow.
         </div> : null }
 
