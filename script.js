@@ -38,7 +38,7 @@ class MorningApp extends React.Component {
           <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label htmlFor="step">Tomorrow's morning step will be:</label>
-            <input type="text"  value={this.state.step} onChange={this.handleChange} className="form-control" id="step" />
+            <textarea wrap="soft" style={{"resize":"none"}} value={this.state.step} onChange={this.handleChange} className="form-control" id="step" />
             <small id="step" className="form-text text-muted">Choose a task that you'll enjoy and finish within half an hour.</small>
           </div>
           <button type="submit" className="btn btn-primary">Save</button>
@@ -57,3 +57,9 @@ class MorningApp extends React.Component {
 }
 const domContainer = document.querySelector('#app');
 ReactDOM.render(React.createElement(MorningApp), domContainer);
+
+// jquery hack to get 
+$('.form-group').on( 'change keyup keydown paste cut', 'textarea', function (){
+    $(this).height(0).height(this.scrollHeight - 10);
+    console.log("wtf")
+}).find( 'textarea' ).change();
