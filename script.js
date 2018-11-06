@@ -66,4 +66,4 @@ function updateTextAreaHeight() {
 }
 $('.form-group').on( 'change keyup keydown paste cut', 'textarea', updateTextAreaHeight).find( 'textarea' ).change();
 $(window).resize(updateTextAreaHeight);
-$(window).load(updateTextAreaHeight);
+window.onload = updateTextAreaHeight;
