@@ -147,7 +147,7 @@ ReactDOM.render(React.createElement(MorningApp), domContainer);
 
 // jquery hack to fix the textbox.
 function updateTextAreaHeight() {
-  $('textarea#step').height(0).height($(' textarea#step')[0].scrollHeight - 10);
+  $('textarea#step').height(0).height($(' textarea#step')[0].scrollHeight - 12);
 }
 $('.form-group').on( 'change keyup keydown paste cut', 'textarea', updateTextAreaHeight).find( 'textarea' ).change();
 $(window).resize(updateTextAreaHeight);
