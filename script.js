@@ -1,3 +1,4 @@
+// streak logic assumes that max - min < 12 hours.
 const MIN_COMPLETION_HOUR = 6;
 const MAX_COMPLETION_HOUR = 12;
 
@@ -19,13 +20,40 @@ class MorningApp extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validHours = this.validHours.bind(this);
     this.checkCanComplete = this.checkCanComplete.bind(this);
+    this.calculateStreak = this.calculateStreak.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
   }
+
+  onKeyDown(event) {
+    if ((event.ctrlKey || event.metaKey) && String.fromCharCode(event.which).toLowerCase() === 's') {
+        event.preventDefault();
+        this.handleSubmit(event);
+    }
+  }
+
+  calculateStreak() {
+    if (this.state.completions.length === 0) {
+      return 0;
+    }
+    let lastDate = this.state.date;
+    let cnt = 0;
+    for (let i = this.state.completions.length - 1; i >= 0; i--) {
+      if ((lastDate.getTime() - this.state.completions[i].getTime())
+          / 36000 > (24 + MAX_COMPLETION_HOUR - MIN_COMPLETION_HOUR)) {
+        break;
+      }
+      lastDate = this.state.completions[i];
+      cnt++;
+    }
+    return cnt;
+  }
+
 
   checkCanComplete() {
     if (!this.validHours(this.state.date.getHours())) {
       return false;
     }
-    if (this.state.completions.length == 0) {
+    if (this.state.completions.length === 0) {
       return true;
     }
     const lastCompletion = this.state.completions[this.state.completions.length - 1];
@@ -84,12 +112,12 @@ class MorningApp extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <div className = "container pt-3" style={{"maxWidth":"800px"}}>
+        <div className = "container pt-3" style={{"maxWidth":"800px"}} onKeyDown={this.onKeyDown}>
           <h2 className="text-center">Morning Step</h2>
           <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label htmlFor="step">Tomorrow's morning step will be:</label>
-            <textarea wrap="soft" style={{"resize":"none"}} value={this.state.step} onChange={this.handleChange} className="form-control" id="step">
+            <textarea autoFocus wrap="soft" style={{"resize":"none"}} value={this.state.step} onChange={this.handleChange} className="form-control" id="step">
             </textarea>
             <small id="step" className="form-text text-muted">Choose a task that you'll enjoy and finish within half an hour.</small>
           </div>
@@ -97,7 +125,6 @@ class MorningApp extends React.Component {
           { this.state.canComplete ? "Mark Completed" : "Save" }
           </button>
         </form>
-        <div></div>
 
         { this.state.saved ? 
         <div className="alert mt-2 alert-success" role="alert">
@@ -106,7 +133,7 @@ class MorningApp extends React.Component {
 
         { this.state.completed ? 
         <div className="alert mt-2 alert-success" role="alert">
-          Completed! Good work. That's XXX completions in a row, and {this.state.completions.length} completions so far.
+          Completed! Good work. That's {this.calculateStreak()} completions in a row, and {this.state.completions.length} completions so far.
         </div> : null }
 
         </div>
