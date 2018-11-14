@@ -1,6 +1,7 @@
 // streak logic assumes that max - min < 12 hours.
 const MIN_COMPLETION_HOUR = 6;
 const MAX_COMPLETION_HOUR = 12;
+const MS_IN_HOUR = 3600000;
 
 class MorningApp extends React.Component {
   constructor(props) {
@@ -39,7 +40,7 @@ class MorningApp extends React.Component {
     let cnt = 0;
     for (let i = this.state.completions.length - 1; i >= 0; i--) {
       if ((lastDate.getTime() - this.state.completions[i].getTime())
-          / 36000 > (24 + MAX_COMPLETION_HOUR - MIN_COMPLETION_HOUR)) {
+          / MS_IN_HOUR > (24 + MAX_COMPLETION_HOUR - MIN_COMPLETION_HOUR)) {
         break;
       }
       lastDate = this.state.completions[i];
@@ -57,7 +58,7 @@ class MorningApp extends React.Component {
       return true;
     }
     const lastCompletion = this.state.completions[this.state.completions.length - 1];
-    const hoursSince = (this.state.date - lastCompletion) / 36000;
+    const hoursSince = (this.state.date - lastCompletion) / MS_IN_HOUR;
     if (hoursSince <= MAX_COMPLETION_HOUR - MIN_COMPLETION_HOUR) {
       return false;
     }
@@ -65,7 +66,7 @@ class MorningApp extends React.Component {
   }
 
   validHours(hours) {
-    return MIN_COMPLETION_HOUR <= hours && hours <= MAX_COMPLETION_HOUR;
+    return MIN_COMPLETION_HOUR <= hours && hours < MAX_COMPLETION_HOUR;
   }
 
   handleChange(event) {
